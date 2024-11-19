@@ -2,38 +2,48 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import UserService from "../services/UserService";
+import AuthService from "../services/AuthService";
 
+// Esquema de validación usando Yup
 const schema = yup.object().shape({
-  username: yup.string().required("El nombre de usuario es obligatorio"),
-  email: yup.string().email("Debe ser un email válido").required("El email es obligatorio"),
-  password: yup.string().min(6, "La contraseña debe tener al menos 6 caracteres").required("La contraseña es obligatoria"),
+  name: yup.string().required("El nombre es obligatorio"),
+  email: yup.string().email("Email inválido").required("El email es obligatorio"),
+  password: yup
+    .string()
+    .min(6, "La contraseña debe tener al menos 6 caracteres")
+    .required("La contraseña es obligatoria"),
 });
 
 const RegisterForm = () => {
+  // Configuración del formulario usando react-hook-form
   const {
-    register, 
-    handleSubmit, 
+    register,
+    handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
+  // Manejo del envío del formulario
   const onSubmit = async (data) => {
     try {
-      await UserService.register(data);
-      alert("Registro exitoso. Por favor, inicie sesión.");
+      const response = await AuthService.register(data);
+      alert("Registro exitoso!");
+      console.log("Usuario registrado:", response.data);
+
+      // Opcional: Redirigir al usuario o mostrar un mensaje adicional
     } catch (error) {
-      alert("Hubo un error al registrar el usuario.");
+      console.error("Error al registrarse:", error);
+      alert("Error al registrarse. Por favor, intenta de nuevo.");
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <label>Nombre de Usuario:</label>
+        <label>Nombre:</label>
         <input type="text" {...register("username")} />
-        {errors.username && <p>{errors.username.message}</p>}
+        {errors.name && <p>{errors.name.message}</p>}
       </div>
       <div>
         <label>Email:</label>
