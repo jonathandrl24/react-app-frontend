@@ -1,7 +1,7 @@
-// Footer.js
+import React from "react";
+
 const Footer = () => {
-    return <Footer>Footer</Footer>;
-  };
-  
-  export default Footer;
-  
+  return <footer>Pie de página</footer>;
+};
+
+export default Footer;
