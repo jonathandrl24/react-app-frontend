@@ -6,7 +6,6 @@ import AuthService from "../services/AuthService";
 
 // Esquema de validación usando Yup
 const schema = yup.object().shape({
-  name: yup.string().required("El nombre es obligatorio"),
   email: yup.string().email("Email inválido").required("El email es obligatorio"),
   password: yup
     .string()
@@ -43,7 +42,6 @@ const RegisterForm = () => {
       <div>
         <label>Nombre:</label>
         <input type="text" {...register("username")} />
-        {errors.name && <p>{errors.name.message}</p>}
       </div>
       <div>
         <label>Email:</label>
